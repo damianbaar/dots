@@ -1,0 +1,3 @@
+set vicmd=vim
+
+command! reload :write | restart full

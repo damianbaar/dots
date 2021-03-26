@@ -32,3 +32,24 @@ highlight Fifo    cterm=none  ctermfg=003 ctermbg=default
 highlight Socket  cterm=bold  ctermfg=005 ctermbg=default
 
 split!
+
+nnoremap w :view<cr>
+
+" Pictures
+filetype *.bmp,*.jpg,*.jpeg,*.png,*.xpm open -a Preview %f &
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
+    \ kitty +kitten icat --clear --transfer-mode=file --place=%pwx%ph@%pxx%py %c
+    \ %pc
+    \ kitty +kitten icat --transfer-mode=file --place=%pwx%ph@%pxx%py --clear
+
+" Pdf
+filetype *.pdf open -a Preview %f &
+fileviewer *.pdf
+    \ tput cup %py %px > /dev/tty && sips -s format jpeg %c --out /tmp/tempfile.jpg > /dev/null&& kitty +kitten icat --clear --transfer-mode=file --place=%pwx%ph@%pxx%py /tmp/tempfile.jpg
+    \ %pc
+    \ kitty +kitten icat --transfer-mode=file --place=%pwx%ph@%pxx%py --clear
+
+fileviewer *.gif,*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]
+	\ tput cup %py %px > /dev/tty && ffmpeg -y -hide_banner -loglevel panic -i %c -ss 00:00:01.000 -vframes 1 /tmp/tempfile.jpg > /dev/null && kitty +kitten icat --clear --transfer-mode=file --place=%pwx%ph@%pxx%py /tmp/tempfile.jpg
+	\ %pc
+	\ kitty +kitten icat --transfer-mode=file --place=%pwx%ph@%pxx%py --clear

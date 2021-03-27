@@ -212,3 +212,4 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 # eval "$(pyenv virtualenv-init -)"
 
 alias icat="kitty +kitten icat"
+alias ack-grep="ack"

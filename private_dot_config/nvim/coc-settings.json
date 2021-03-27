@@ -4,94 +4,76 @@
   "diagnostic.warningSign": "⚠",
   "diagnostic.hintSign": "➤",
   "diagnostic.infoSign": "",
-  "diagnostic-languageserver.filetypes": {
-    "sh": "shellcheck"
-  },
-  "diagnostic-languageserver.formatFiletypes": {
-    "python": [
-      "black",
-      "isort",
-      "docformatter"
-    ]
-  },
+  "diagnostic-languageserver.enable": true,
+  "diagnostic-languageserver.mergeConfig": true,
   "list.insertMappings": {
     "<C-x>": "action:split",
     "<C-v>": "action:vsplit"
+  },
+  "diagnostic-languageserver.filetypes": {
+    "python": [
+      "mypy"
+    ]
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+    "python": [
+      "autopep8"
+    ]
   },
   "list.normalMappings": {
     "s": "action:split",
     "v": "action:vsplit"
   },
-  "list.source.files.command": "fdfind",
+  "list.source.files.command": "rg",
   "list.source.files.args": [
     "--type",
     "f"
   ],
-  "diagnostic-languageserver.linters": {
-    "pylint": {
-      "sourceName": "pylint",
-      "command": "pylint",
-      "args": [
-        "--output-format",
-        "text",
-        "--score",
-        "no",
-        "--msg-template",
-        "'{line}:{column}:{category}:{msg} ({msg_id}:{symbol})'",
-        "%file"
-      ],
-      "formatPattern": [
-        "^(\\d+?):(\\d+?):([a-z]+?):(.*)$",
-        {
-          "line": 1,
-          "column": 2,
-          "security": 3,
-          "message": 4
-        }
-      ],
-      "rootPatterns": [
-        ".git",
-        "pyproject.toml",
-        "setup.py"
-      ],
-      "securities": {
-        "informational": "hint",
-        "refactor": "info",
-        "convention": "info",
-        "warning": "warning",
-        "error": "error",
-        "fatal": "error"
-      },
-      "offsetColumn": 1,
-      "formatLines": 1
-    }
-  },
-  "diagnostic-languageserver.formatters": {
-    "black": {
-      "command": "black",
-      "args": [
-        "-q",
-        "-"
-      ]
-    },
-    "isort": {
-      "command": "isort",
-      "args": [
-        "-q",
-        "-"
-      ]
-    },
-    "docformatter": {
-      "command": "docformatter",
-      "args": [
-        "-"
-      ]
-    }
-  },
   "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "python",
-    "json"
+    "json",
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact"
   ],
-  "git.enableGutters": false
+  "eslint.filetypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact"
+  ],
+  "git.enableGutters": false,
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.mypyEnabled": true,
+  "coc.preferences.rootPatterns": [
+    ".git"
+  ],
+  "explorer.file.showHiddenFiles": true,
+  "explorer.icon.enableVimDevicons": true,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.file.child.template": "[git | 2] [selection | clip | 1] [indent][icon | 1] [diagnosticError & 1][filename omitCenter 1][modified][readonly] [linkIcon & 1][link growRight 1 omitCenter 5]",
+  "explorer.buffer.root.template": "[icon & 1] OPEN EDITORS",
+  "explorer.file.root.template": "[icon & 1] PROJECT ([root])",
+  "explorer.width": 30,
+  "snippets.userSnippetsDirectory": "~/.config/nvim/ultisnips",
+  "suggest.snippetIndicator": " ►",
+  "diagnostic.enable": true,
+  "coc.preferences.hoverTarget": ["float", "echo"],
+  "html.format.enable": true,
+  "snippets.extends": {
+    "javascriptreact": [
+      "javascript"
+    ],
+    "typescript": [
+      "javascript"
+    ]
+  },
+  "suggest.echodocSupport": true,
+  "diagnostic.refreshOnInsertMode": true,
+  "diagnostic.signOffset": 9999999,
+  "diagnostic.format": "%message"
+
 }

@@ -16,9 +16,8 @@ set nowrap
 set list
 set number
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-" set listchars=tab:·\ ,eol:¶,trail:·,extends:»,precedes:«
-" set listchars=tab:·\ ,eol:¶,trail:·,extends:»,precedes:«
-set listchars=tab:·\ ,trail:·,extends:»,precedes:«
+set listchars=tab:·\ ,eol:¶,trail:·,extends:»,precedes:«
+" set listchars=tab:·\ ,trail:·,extends:»,precedes:«
 " :set nolist
 set autowriteall
 set hidden
@@ -63,7 +62,14 @@ set sessionoptions-=help
 set sessionoptions-=tabpages
 set laststatus=2 " Seperate lines for state and mode
 set lazyredraw            " improve scrolling performance when navigating through large results
-set regexpengine=1        " use old regexp engine
+" set wildignore+=*/node_modules/*
+" set wildignore+=*/.mypy_cache/*
+" set wildignore+=*/.pytest_cache/*
+" set wildignore+=*/.serverless/*
+" set wildignore+=*/.git/*
+" set wildignore+=*/.*/*
+" https://github.com/HerringtonDarkholme/yats.vim/issues/25
+" set regexpengine=1        " use old regexp engine
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -83,7 +89,6 @@ set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 
 set rtp+=~/.local/share/nvim/plugged/ultisnips/
-" set rtp+=/nix/store/cj9cwf2ash8mwgxkg24mpnhay19cf18w-fzf-0.20.0/bin/fzf
 
 call plug#begin('~/.local/share/nvim/site/plugged')
 
@@ -91,7 +96,6 @@ if exists('g:vscode')
       " VSCode extension
 else
   Plug 'tpope/vim-sensible'
-  " Plug 'yuki-ycino/fzf-preview.vim'
   Plug 'Lokaltog/vim-easymotion'
   " Plug 'git-time-metric/gtm-vim-plugin'
   Plug 'vim-airline/vim-airline'
@@ -101,7 +105,7 @@ else
   Plug 'LnL7/vim-nix'
   Plug 'tomtom/tcomment_vim'
   Plug 'godlygeek/tabular'
-  Plug 'chriskempson/base16-vim'
+  " Plug 'chriskempson/base16-vim'
   Plug 'tpope/vim-surround'
   Plug 'nathanaelkane/vim-indent-guides'
   Plug 'mhinz/vim-startify'
@@ -110,11 +114,9 @@ else
   Plug 'tpope/vim-repeat'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
-  Plug 'brooth/far.vim'
+  " Plug 'brooth/far.vim'
   Plug 'lvht/fzf-mru'
   Plug 'xolox/vim-misc'
-  " Plug 'jiangmiao/auto-pairs'
-  " Plug 'juliosueiras/vim-terraform-completion'
   Plug 'tpope/vim-fugitive'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'editorconfig/editorconfig-vim'
@@ -127,10 +129,14 @@ else
   Plug 'junegunn/goyo.vim'
   Plug 'mg979/vim-visual-multi', {'branch': 'master'}
   Plug 'wookayin/vim-autoimport'
-  Plug 'wincent/ferret'
   Plug 'pechorin/any-jump.vim'
-  " Plug 'natebosch/vim-lsc'
-
+  Plug 'editorconfig/editorconfig-vim'
+  " Plug 'stefandtw/quickfix-reflector.vim'
+  " Plug 'rafi/awesome-vim-colorschemes'
+  Plug 'joshdick/onedark.vim'
+  Plug 'brooth/far.vim'
+  " Plug 'wincent/ferret'
+  
   let mapleader=","
   let g:nv_search_paths = ["~/notes"]
   let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
@@ -142,10 +148,35 @@ else
   filetype plugin indent on
   syntax on
 
+  let filename = '.gitignore'
+  if filereadable(filename)
+      let igstring = ''
+      for oline in readfile(filename)
+          let line = substitute(oline, '\s|\n|\r', '', "g")
+          if line =~ '^#' | con | endif
+          if line == '' | con  | endif
+          if line =~ '^!' | con  | endif
+          if line =~ '/$' | let igstring .= "," . line . "*" | con | endif
+          let igstring .= "," . line
+      endfor
+      let execstring = "set wildignore=".substitute(igstring, '^,', '', "g")
+      execute execstring
+  endif
+  
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  let g:onedark_termcolors=256
+  let g:onedark_terminal_italics=1
+
   let g:smalls_auto_excursion = 1
   let g:smalls_auto_excursion_min_input_length = 1
 
   let g:airline#extensions#ale#enabled = 1
+  
+  let g:far#enable_undo=1
+  let g:far#source='rgnvim'
+  " let g:far#ignore_files = [ 'node_modules' , '.git', '.mypy_cache', '.pytest_cache', '.serverless' ]
+  let g:far#file_mask_favorites=['%:p', '**/*.*', '**/*.js', '**/*.py', '**/*.java', '**/*.css', '**/*.html', '**/*.vim', '**/*.cpp', '**/*.c', '**/*.h', ]
+
 
   if has ('x') && has ('gui')
     set clipboard=unnamedplus
@@ -212,18 +243,6 @@ else
   "   \ 'Ignored'   : '☒',
   "   \ "Unknown"   : "?"
   "
-" let g:airline_left_sep = '»'
-" let g:airline_left_sep = '▶'
-" let g:airline_right_sep = '«'
-" let g:airline_right_sep = '◀'
-" let g:airline_symbols.linenr = '␊'
-" let g:airline_symbols.linenr = '␤'
-" let g:airline_symbols.linenr = '¶'
-" let g:airline_symbols.branch = '⎇'
-" let g:airline_symbols.paste = 'ρ'
-" let g:airline_symbols.paste = 'Þ'
-" let g:airline_symbols.paste = '∥'
-" let g:airline_symbols.whitespace = 'Ξ'
 
   let g:session_autosave = 'yes' 
   let g:session_autoload = 'yes' 
@@ -244,6 +263,8 @@ else
   let g:startify_session_persistence = 1
   let g:startify_session_dir = '~/.config/nvim/sessions'
   let g:startify_change_to_vcs_root = 1
+
+  let g:qf_modifiable = 1
 
   autocmd User Startified setlocal cursorline
 
@@ -271,11 +292,30 @@ else
   endfunction
   autocmd User AirlineAfterInit call AirlineInit()
 
+    " Use tab for trigger completion with characters ahead and navigate.
+  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
   inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  " Navigate snippet placeholders using tab
+  let g:coc_snippet_next = '<Tab>'
+  let g:coc_snippet_prev = '<S-Tab>'
+
+  " Use enter to accept snippet expansion
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
+   
+  " inoremap <silent><expr> <TAB>
+  "       \ pumvisible() ? "\<C-n>" :
+  "       \ <SID>check_back_space() ? "\<TAB>" :
+  "       \ coc#refresh()
+  " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
   function! s:check_back_space() abort
     let col = col('.') - 1
@@ -283,10 +323,10 @@ else
   endfunction
 
   let g:coc_global_extensions = [
-        \ "coc-yank", "coc-yaml", "coc-spell-checker", "coc-pyright",
+        \ "coc-yank", "coc-yaml", "coc-spell-checker", "coc-snippets",
         \ "coc-json", "coc-highlight", "coc-git", 'coc-json', 'coc-diagnostic',
-        \ "coc-explorer", "coc-actions", "coc-jedi", "coc-cfn-lint",
-        \ "coc-marketplace", "coc-docker", "coc-lists", "coc-tsserver"
+        \ "coc-explorer", "coc-actions", "coc-pyright", "coc-cfn-lint",
+        \ "coc-marketplace", "coc-docker", "coc-lists", "coc-tsserver", "coc-eslint"
         \ ]
 
 
@@ -296,6 +336,14 @@ else
   let g:fzf_layout = { 'window': 'enew' }
   let g:fzf_layout = { 'window': '-tabnew' }
   let g:fzf_layout = { 'window': '10new' }
+  "
+  " let g:far#sources = {
+  "   \   'rgnvim': {
+  "   \       'args': {
+  "   \           'cmd': ['rg', '--column', 
+  "   \                   '--max-count={limit}', '{pattern}',
+  "   \                   '--glob=**/node_modules', '--glob=.git']
+  "   \       }}}
 
   " Customize fzf colors to match your color scheme
   " - fzf#wrap translates this to a set of `--color` options
@@ -365,14 +413,61 @@ else
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#formatter = 'unique_tail'
   " let g:airline_powerline_fonts = 1
+  " " hilight search result by default
+  " let g:FerretHlsearch=1
+  " " let g:FerretNvim = 0
+  " " let g:FerretJob = 0
+  " let g:FerretExecutable='rg,ack,ag'
 
-  colorscheme base16-material
+    let g:coc_explorer_global_presets = {
+  \   'tab': {
+  \     'position': 'tab',
+  \     'quit-on-open': v:true,
+  \   },
+  \   'tab:$': {
+  \     'position': 'tab:$',
+  \     'quit-on-open': v:true,
+  \   },
+  \   'floating': {
+  \     'position': 'floating',
+  \     'open-action-strategy': 'sourceWindow',
+  \   },
+  \   'floatingTop': {
+  \     'position': 'floating',
+  \     'floating-position': 'center-top',
+  \     'open-action-strategy': 'sourceWindow',
+  \   },
+  \   'floatingLeftside': {
+  \     'position': 'floating',
+  \     'floating-position': 'left-center',
+  \     'floating-width': 50,
+  \     'open-action-strategy': 'sourceWindow',
+  \   },
+  \   'floatingRightside': {
+  \     'position': 'floating',
+  \     'floating-position': 'right-center',
+  \     'floating-width': 50,
+  \     'open-action-strategy': 'sourceWindow',
+  \   },
+  \   'simplify': {
+  \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+  \   },
+  \   'buffer': {
+  \     'sources': [{'name': 'buffer', 'expand': v:true}]
+  \   },
+  \ }
+
+" prefer to use rg
+
+  " colorscheme base16-material
+  colorscheme onedark
 
   "KEYS
 
   map <Leader>rs :source $MYVIMRC <CR>
   map <silent> <m-,> :e $MYVIMRC<CR>
   nnoremap \ :CocSearch -w <cword><CR>
+  nnoremap <leader>cpr :CocSearch <C-R>=expand("<cword>")<CR><CR>
 
   imap jj <Esc>
 
@@ -431,7 +526,7 @@ else
 
   " nnoremap <silent><tab>  : FzfPreviewBuffers<CR>
   " nnoremap <silent><c-p>  : FzfPreviewGitFiles<CR>
-  nnoremap <silent><leader>fr : FZFMru "<C-r>=expand('<cword>')<CR>"<CR>
+  nnoremap <silent><leader>fr : FZFMru "<C-r>=nd('<cword>')<CR>"<CR>
   nnoremap <silent><leader>fw : FzfPreviewProjectGrep "<C-r>=expand('<cword>')<CR>"<CR>
   nnoremap <silent><leader>,fl :FzfPreviewLines<CR>
   nnoremap <silent> <leader>mm : History<CR>
@@ -461,12 +556,14 @@ else
 
   inoremap <silent><expr> <c-space> coc#refresh()
 
-  nmap <silent> [g <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]g <Plug>(coc-diagnostic-next)
+  nnoremap <silent> <leader>gh :call CocActionAsync('doHover')<cr> 
+
+  nmap <silent> [e <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]e <Plug>(coc-diagnostic-next)
 
   " GoTo code navigation.
   nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gt <Plug>(coc-type-definition)
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
 
@@ -477,6 +574,11 @@ else
   map <leader>ca  <Plug>(coc-codeaction-selected)<CR>
   nmap <leader>ac  <Plug>(coc-codeaction)<CR>
   nmap <leader>qf  <Plug>(coc-fix-current)<CR>
+
+  " hilight search result by default
+  let g:FerretHlsearch=1
+  " prefer to use rg
+  let g:FerretExecutable='ack,rg,ag'
 
   " Introduce function text object
   " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -599,4 +701,8 @@ else
       \}
 
     " ordinary neovim
+    "
+    " hi! CocErrorSign guifg=#d1666a
+    highlight link CocErrorSign GruvboxRed
+
 endif

@@ -82,6 +82,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)# Add wisely, as too many plugins slow down shell startup.UTOSTART
 plugins=(
+dirpersist
 git
 vi-mode
 zsh-z
@@ -93,7 +94,7 @@ aws
 # nix-shell
 # kill-node
 node
-# tmux
+tmux
 # kops
 last-working-dir
 zsh-syntax-highlighting
@@ -189,6 +190,7 @@ export FZF_DEFAULT_OPTS="--ansi"
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 # export FZF_DEFAULT_COMMAND="fdfind . $HOME"
 export FZF_ALT_C_COMMAND="fdfind -t d . $HOME"
+ZSH_TMUX_AUTOSTART=true
 
 # . /Users/damianbaar/.nix-profile/etc/profile.d/nix.sh
 
@@ -211,5 +213,4 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 # eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
 
-alias icat="kitty +kitten icat"
-alias ack-grep="ack"
+setopt autopushd

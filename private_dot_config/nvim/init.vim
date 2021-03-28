@@ -16,8 +16,8 @@ set nowrap
 set list
 set number
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-set listchars=tab:·\ ,eol:¶,trail:·,extends:»,precedes:«
-" set listchars=tab:·\ ,trail:·,extends:»,precedes:«
+" set listchars=tab:·\ ,eol:¶,trail:·,extends:»,precedes:«
+set listchars=tab:·\ ,trail:·,extends:»,precedes:«
 " :set nolist
 set autowriteall
 set hidden
@@ -131,11 +131,16 @@ else
   Plug 'wookayin/vim-autoimport'
   Plug 'pechorin/any-jump.vim'
   Plug 'editorconfig/editorconfig-vim'
+  Plug 'puremourning/vimspector'
+  Plug 'vim-test/vim-test'
+  Plug 'voldikss/vim-floaterm'
   " Plug 'stefandtw/quickfix-reflector.vim'
   " Plug 'rafi/awesome-vim-colorschemes'
   Plug 'joshdick/onedark.vim'
   Plug 'brooth/far.vim'
+  Plug 'kassio/neoterm' 
   " Plug 'wincent/ferret'
+  Plug 'kovetskiy/sxhkd-vim'
   
   let mapleader=","
   let g:nv_search_paths = ["~/notes"]
@@ -174,9 +179,14 @@ else
   
   let g:far#enable_undo=1
   let g:far#source='rgnvim'
-  " let g:far#ignore_files = [ 'node_modules' , '.git', '.mypy_cache', '.pytest_cache', '.serverless' ]
   let g:far#file_mask_favorites=['%:p', '**/*.*', '**/*.js', '**/*.py', '**/*.java', '**/*.css', '**/*.html', '**/*.vim', '**/*.cpp', '**/*.c', '**/*.h', ]
 
+  let test#python#runner = 'pytest'
+  let g:test#preserve_screen = 1
+
+  if has('nvim')
+    tmap <C-o> <C-\><C-n>
+  endif
 
   if has ('x') && has ('gui')
     set clipboard=unnamedplus

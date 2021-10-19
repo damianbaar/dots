@@ -1,0 +1,16 @@
+{
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.mypy_cache",
+    "**/.pytest_cache",
+    "**/.serverless",
+    "**/.dynamodb",
+    "**/temp"
+  ],
+  "venv": "env367",
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "pythonVersion": "3.9",
+  "pythonPlatform": "Linux"
+}

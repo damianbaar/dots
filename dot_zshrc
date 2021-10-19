@@ -190,7 +190,7 @@ export FZF_DEFAULT_OPTS="--ansi"
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 # export FZF_DEFAULT_COMMAND="fdfind . $HOME"
 export FZF_ALT_C_COMMAND="fdfind -t d . $HOME"
-ZSH_TMUX_AUTOSTART=true
+# ZSH_TMUX_AUTOSTART=true
 
 # . /Users/damianbaar/.nix-profile/etc/profile.d/nix.sh
 
@@ -214,3 +214,32 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 # eval "$(pyenv virtualenv-init -)"
 
 setopt autopushd
+
+get_allianz_password() {
+  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="password").value' | tr -d '"' | xclip -sel clip
+}
+
+get_allianz_user() {
+  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="username").value' | tr -d '"' | xclip -sel clip
+}
+
+get_allianz_otp() {
+  op get totp Allianz-Collaboration | xclip -sel clip
+}
+
+get_allianz_gh_token() {
+  op get item Allianz-Collaboration | jq '.details.sections[].fields[] | select(.t=="github token").v' | tr -d '"' | xclip -sel clip
+}
+
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+
+login_to_allianz_gh() {
+  eval $(op signin my)
+
+  adp-2fa cookie << EOF
+  get_allianz_user
+  get_allianz_password
+  get_allianz_otp
+EOF
+}

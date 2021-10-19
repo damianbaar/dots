@@ -1,0 +1,32 @@
+{
+  "configurations": {
+    "pytest this file": {
+      "adapter": "debugpy",
+      "variables": {
+        "Python": {
+          "shell": "/bin/sh -c 'echo \"${dollar}VIRTUAL_ENV/bin/pytest\"'"
+        }
+      },
+      "configuration": {
+        "name": "Python: Current File",
+        "type": "python",
+        "request": "launch",
+        "cwd": "${workspaceRoot}",
+        "stopOnEntry": false,
+        "debugOptions": [],
+        "program": "$Python",
+        "console": "integratedTerminal",
+        "args": [
+          "${file}",
+          "*${CommandLineArgs}"
+        ]
+      },
+      "breakpoints": {
+        "exception": {
+          "caught": "N",
+          "uncaught": "Y"
+        }
+      }
+    }
+  }
+}

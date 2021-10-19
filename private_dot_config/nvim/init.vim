@@ -141,6 +141,7 @@ else
   Plug 'kassio/neoterm' 
   " Plug 'wincent/ferret'
   Plug 'kovetskiy/sxhkd-vim'
+  " Plug 'sagi-z/vimspectorpy'
   
   let mapleader=","
   let g:nv_search_paths = ["~/notes"]
@@ -182,18 +183,20 @@ else
   let g:far#file_mask_favorites=['%:p', '**/*.*', '**/*.js', '**/*.py', '**/*.java', '**/*.css', '**/*.html', '**/*.vim', '**/*.cpp', '**/*.c', '**/*.h', ]
 
   let test#python#runner = 'pytest'
+  " let test#strategy = "vimspectorpy"
   let g:test#preserve_screen = 1
+
+  let g:vimspector_enable_mappings = 'HUMAN'
 
   if has('nvim')
     tmap <C-o> <C-\><C-n>
   endif
 
-  if has ('x') && has ('gui')
-    set clipboard=unnamedplus
-  elseif has ('gui')
-    set clipboard=unnamed
+  if has ('gui')
+    set clipboard+=unnamed
+  else
+    set clipboard+=unnamedplus
   endif
-
 
   if has("persistent_undo")
       set undodir="$HOME/.undodir"
@@ -335,7 +338,7 @@ else
   let g:coc_global_extensions = [
         \ "coc-yank", "coc-yaml", "coc-spell-checker", "coc-snippets",
         \ "coc-json", "coc-highlight", "coc-git", 'coc-json', 'coc-diagnostic',
-        \ "coc-explorer", "coc-actions", "coc-pyright", "coc-cfn-lint",
+        \ "coc-explorer", "coc-pyright", "coc-cfn-lint", "coc-fzf-preview",
         \ "coc-marketplace", "coc-docker", "coc-lists", "coc-tsserver", "coc-eslint"
         \ ]
 
@@ -567,6 +570,7 @@ else
   inoremap <silent><expr> <c-space> coc#refresh()
 
   nnoremap <silent> <leader>gh :call CocActionAsync('doHover')<cr> 
+  nnoremap <silent> <leader>rd :call vimspector#Launch()<cr>
 
   nmap <silent> [e <Plug>(coc-diagnostic-prev)
   nmap <silent> ]e <Plug>(coc-diagnostic-next)
@@ -585,6 +589,25 @@ else
   nmap <leader>ac  <Plug>(coc-codeaction)<CR>
   nmap <leader>qf  <Plug>(coc-fix-current)<CR>
 
+  nmap <Leader>f [fzf-p]
+  xmap <Leader>f [fzf-p]
+
+  nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+  nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
+  nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
+  nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
+  nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+  nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
+  nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
+  nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
+  nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+  nnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+  nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+  xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+  nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
+  nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+  nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+
   " hilight search result by default
   let g:FerretHlsearch=1
   " prefer to use rg
@@ -596,12 +619,6 @@ else
   xmap af <Plug>(coc-funcobj-a)
   omap if <Plug>(coc-funcobj-i)
   omap af <Plug>(coc-funcobj-a)
-
-  " Use <TAB> for selections ranges.
-  " NOTE: Requires 'textDocument/selectionRange' support from the language server.
-  " coc-tsserver, coc-python are the examples of servers that support it.
-  nmap <silent> <TAB> <Plug>(coc-range-select)
-  xmap <silent> <TAB> <Plug>(coc-range-select)
 
   " Add `:Format` command to format current buffer.
   command! -nargs=0 Format :call CocAction('format')

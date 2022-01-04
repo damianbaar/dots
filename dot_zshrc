@@ -85,7 +85,7 @@ plugins=(
 dirpersist
 git
 vi-mode
-zsh-z
+# zsh-z
 direnv
 # nix
 # nix-zsh-completions
@@ -216,19 +216,23 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 setopt autopushd
 
 get_allianz_password() {
-  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="password").value' | tr -d '"' | xclip -sel clip
+  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="password").value' | tr -d '"' | pbcopy
 }
 
 get_allianz_user() {
-  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="username").value' | tr -d '"' | xclip -sel clip
+  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="username").value' | tr -d '"' | pbcopy
 }
 
 get_allianz_otp() {
-  op get totp Allianz-Collaboration | xclip -sel clip
+  op get totp Allianz-Collaboration | pbcopy
 }
 
 get_allianz_gh_token() {
   op get item Allianz-Collaboration | jq '.details.sections[].fields[] | select(.t=="github token").v' | tr -d '"' | xclip -sel clip
+}
+
+login_1p() {
+  eval $(op signin damianbaar)
 }
 
 export LANG=en_US.UTF-8
@@ -237,7 +241,7 @@ export LC_CTYPE=en_US.UTF-8
 login_to_allianz_gh() {
   eval $(op signin my)
 
-  adp-2fa cookie << EOF
+adp-2fa cookie << EOF
   get_allianz_user
   get_allianz_password
   get_allianz_otp

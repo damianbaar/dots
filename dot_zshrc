@@ -1,5 +1,16 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.local/bin:/usr/bin
+export PYENV_ROOT="$HOME/.pyenv"
+
+export PY_PATH=$(pyenv root)/shims:$PYENV_ROOT/bin
+export LOCAL_PATH=/usr/local/bin:$HOME/.local/bin:$HOME/bin
+export PATH=$PY_PATH:$LOCAL_PATH:$PATH:/usr/bin:$HOME/.npm-global/bin:$HOME/.yarn/bin:$PATH
+export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+export PATH="$HOME/.ghcup/bin:$PATH:$HOME/.cabal/bin:$FZF_BASE"
+export PATH="$PATH:/usr/local/Homebrew/Cellar/terraform/1.2.2/bin"
+export PATH="$PATH:/usr/local/Homebrew/bin"
+
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -16,7 +27,6 @@ fi
 # fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:$HOME/.yarn/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -27,7 +37,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="evan"
-TERM="xterm-256color"
+# TERM="xterm-256color"
 # ZSH_THEME="wezm"
 
 # Set list of themes to load
@@ -81,26 +91,19 @@ ENABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)# Add wisely, as too many plugins slow down shell startup.UTOSTART
+#
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 plugins=(
 dirpersist
 git
 vi-mode
-# zsh-z
 direnv
-# nix
-# nix-zsh-completions
-# bazel
 aws
-# nix-shell
-# kill-node
 node
 tmux
-# kops
 last-working-dir
-zsh-syntax-highlighting
-zsh-autosuggestions
 yarn
-# vsc
 fzf
 )
 
@@ -144,23 +147,8 @@ alias vi="nvim"
 #   export JAVA_HOME=`/usr/libexec/java_home`
 # fi
 #
-# export PATH=$JAVA_HOME/bin:$PATH:/Users/damianbaar/.local/bin:$HOME/go/bin/
-export PATH=$PATH:/Users/damianbaar/.local/bin:$HOME/go/bin/
 export LIBRARY_PATH=/usr/lib:/opt/local/lib
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# . $HOME/.ghcup/env
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-# [[ -f /Users/damianbaar/workspaces/khols/condition-checker/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/damianbaar/workspaces/khols/condition-checker/node_modules/tabtab/.completions/serverless.zsh
-# # tabtab source for sls package
-# # uninstall by removing these lines or running `tabtab uninstall sls`
-# [[ -f /Users/damianbaar/workspaces/khols/condition-checker/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/damianbaar/workspaces/khols/condition-checker/node_modules/tabtab/.completions/sls.zsh
-# # tabtab source for slss package
-# # uninstall by removing these lines or running ``
-# [[ -f /Users/damianbaar/workspaces/khols/condition-checker/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/damianbaar/workspaces/khols/condition-checker/node_modules/tabtab/.completions/slss.zsh. "/Users/damianbaar/.acme.sh/acme.sh.env"
-# . "/Users/damianbaar/.acme.sh/acme.sh.env"
 #
 # # Enable Ctrl-x-e to edit command line
 autoload -U edit-command-line
@@ -185,19 +173,20 @@ ZSH_TMUX_AUTOSTART=true
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export FZF_DEFAULT_COMMAND="fdfind --type file --color=always --exclude .git"
+export FZF_DEFAULT_COMMAND="fd --type file --color=always --exclude .git"
 export FZF_DEFAULT_OPTS="--ansi"
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-# export FZF_DEFAULT_COMMAND="fdfind . $HOME"
-export FZF_ALT_C_COMMAND="fdfind -t d . $HOME"
+# export FZF_DEFAULT_COMMAND="fd . $HOME"
+export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 # ZSH_TMUX_AUTOSTART=true
 
 # . /Users/damianbaar/.nix-profile/etc/profile.d/nix.sh
 
 # To customize prompt, run `p10k configure` or edit ~/workspace/playgrounds/haskell-bazel-nixpkgs/temp/powerlevel10k/config/p10k-lean-8colors.zsh.
-[[ ! -f ~/workspace/playgrounds/haskell-bazel-nixpkgs/temp/powerlevel10k/config/p10k-lean-8colors.zsh ]] || source ~/workspace/playgrounds/haskell-bazel-nixpkgs/temp/powerlevel10k/config/p10k-lean-8colors.zsh
+# [[ ! -f ~/workspace/playgrounds/haskell-bazel-nixpkgs/temp/powerlevel10k/config/p10k-lean-8colors.zsh ]] || source ~/workspace/playgrounds/haskell-bazel-nixpkgs/temp/powerlevel10k/config/p10k-lean-8colors.zsh
 
 #AWSume alias to source the AWSume script
+alias brew86="arch -x86_64 /usr/local/homebrew/bin/brew"
 alias awsume=". awsume"
 alias pip=pip3
 fpath=(/usr/local/share/zsh/site-functions $fpath)
@@ -215,20 +204,28 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 
 setopt autopushd
 
-get_allianz_password() {
-  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="password").value' | tr -d '"' | pbcopy
+_get_allianz_password() {
+  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="password").value' | tr -d '"'
+}
+
+_get_allianz_user() {
+  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="username").value' | tr -d '"'
+}
+
+_get_allianz_otp() {
+  op get totp Allianz-Collaboration
 }
 
 get_allianz_user() {
-  op get item Allianz-Collaboration | jq '.details.fields[] | select(.designation=="username").value' | tr -d '"' | pbcopy
+  get_allianz_user | pbcopy
 }
 
-get_allianz_otp() {
-  op get totp Allianz-Collaboration | pbcopy
+get_allianz_password() {
+  get_allianz_password | pbcopy
 }
 
 get_allianz_gh_token() {
-  op get item Allianz-Collaboration | jq '.details.sections[].fields[] | select(.t=="github token").v' | tr -d '"' | xclip -sel clip
+  op get item Allianz-Collaboration | jq '.details.sections[].fields[] | select(.t=="github token").v' | tr -d '"' | pbcopy
 }
 
 login_1p() {
@@ -239,11 +236,27 @@ export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
 login_to_allianz_gh() {
-  eval $(op signin my)
+  eval $(op signin damianbaar)
+  
+  USER=$(_get_allianz_user)
+  PASS=$(_get_allianz_password)
+  OTP=$(_get_allianz_otp)
+  LOCATION="$HOME/Workspaces/allianz/scc"
 
-adp-2fa cookie << EOF
-  get_allianz_user
-  get_allianz_password
-  get_allianz_otp
-EOF
+  (cd $LOCATION && adp-2fa -u $USER -p $PASS -o $OTP cookie --global)
 }
+
+get_git_log() {
+  from=$1
+  to=$2
+  git log --since=''$from' 2022' --until=''$to' 2022' --all --author=Damian
+}
+
+#AWSume alias to source the AWSume script
+alias awsume="source \$(pyenv which awsume)"
+
+#Auto-Complete function for AWSume
+fpath=(~/.awsume/zsh-autocomplete/ $fpath)
+
+source <(antibody init)
+antibody bundle < ~/.zsh_plugins

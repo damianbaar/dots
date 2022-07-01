@@ -92,112 +92,121 @@ set rtp+=~/.local/share/nvim/plugged/ultisnips/
 
 call plug#begin('~/.local/share/nvim/site/plugged')
 
-if exists('g:vscode')
-      " VSCode extension
+" if exists('g:vscode')
+"       " VSCode extension
+" else
+Plug 'tpope/vim-sensible'
+Plug 'Lokaltog/vim-easymotion'
+" Plug 'git-time-metric/gtm-vim-plugin'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'notpratheek/vim-luna'
+Plug 'mbbill/undotree'
+Plug 'LnL7/vim-nix'
+Plug 'tomtom/tcomment_vim'
+Plug 'godlygeek/tabular'
+Plug 'zefei/vim-wintabs'
+Plug 'zefei/vim-wintabs-powerline'
+Plug 'chipsenkbeil/distant.nvim'
+" Plug 'chriskempson/base16-vim'
+Plug 'tpope/vim-surround'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'mhinz/vim-startify'
+Plug 'Raimondi/delimitMate'
+Plug 't9md/vim-smalls'
+Plug 'tpope/vim-repeat'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'wakatime/vim-wakatime'
+
+" Plug 'brooth/far.vim'
+Plug 'lvht/fzf-mru'
+Plug 'xolox/vim-misc'
+Plug 'tpope/vim-fugitive'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-unimpaired'
+Plug 'mhartington/vim-typings'
+Plug 'sheerun/vim-polyglot'
+Plug 'grvcoelho/vim-javascript-snippets'
+" Plug 'alok/notational-fzf-vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'junegunn/goyo.vim'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'wookayin/vim-autoimport'
+Plug 'pechorin/any-jump.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'puremourning/vimspector'
+Plug 'vim-test/vim-test'
+Plug 'voldikss/vim-floaterm'
+" Plug 'stefandtw/quickfix-reflector.vim'
+" Plug 'rafi/awesome-vim-colorschemes'
+Plug 'joshdick/onedark.vim'
+Plug 'brooth/far.vim'
+Plug 'kassio/neoterm' 
+" Plug 'wincent/ferret'
+Plug 'kovetskiy/sxhkd-vim'
+" Plug 'sagi-z/vimspectorpy'
+
+let mapleader=","
+" let g:nv_search_paths = ["~/notes"]
+let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
+let $NVIM_NCM_LOG_LEVEL="DEBUG"
+let $NVIM_NCM_MULTI_THREAD=0
+
+call plug#end()
+
+filetype plugin indent on
+syntax on
+
+let filename = '.gitignore'
+if filereadable(filename)
+    let igstring = ''
+    for oline in readfile(filename)
+        let line = substitute(oline, '\s|\n|\r', '', "g")
+        if line =~ '^#' | con | endif
+        if line == '' | con  | endif
+        if line =~ '^!' | con  | endif
+        if line =~ '/$' | let igstring .= "," . line . "*" | con | endif
+        let igstring .= "," . line
+    endfor
+    let execstring = "set wildignore=".substitute(igstring, '^,', '', "g")
+    execute execstring
+endif
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let g:onedark_termcolors=256
+let g:onedark_terminal_italics=1
+
+let g:smalls_auto_excursion = 1
+let g:smalls_auto_excursion_min_input_length = 1
+
+let g:airline#extensions#ale#enabled = 1
+
+let g:far#enable_undo=1
+let g:far#source='rgnvim'
+let g:far#file_mask_favorites=['%:p', '**/*.*', '**/*.js', '**/*.py', '**/*.java', '**/*.css', '**/*.html', '**/*.vim', '**/*.cpp', '**/*.c', '**/*.h', ]
+
+let test#python#runner = 'pytest'
+" let test#strategy = "vimspectorpy"
+let g:test#preserve_screen = 1
+
+let g:vimspector_enable_mappings = 'HUMAN'
+
+if has('nvim')
+  tmap <C-o> <C-\><C-n>
+endif
+
+if has ('gui')
+  set clipboard+=unnamed
 else
-  Plug 'tpope/vim-sensible'
-  Plug 'Lokaltog/vim-easymotion'
-  " Plug 'git-time-metric/gtm-vim-plugin'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-  Plug 'notpratheek/vim-luna'
-  Plug 'mbbill/undotree'
-  Plug 'LnL7/vim-nix'
-  Plug 'tomtom/tcomment_vim'
-  Plug 'godlygeek/tabular'
-  " Plug 'chriskempson/base16-vim'
-  Plug 'tpope/vim-surround'
-  Plug 'nathanaelkane/vim-indent-guides'
-  Plug 'mhinz/vim-startify'
-  Plug 'Raimondi/delimitMate'
-  Plug 't9md/vim-smalls'
-  Plug 'tpope/vim-repeat'
-  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  Plug 'junegunn/fzf.vim'
-  " Plug 'brooth/far.vim'
-  Plug 'lvht/fzf-mru'
-  Plug 'xolox/vim-misc'
-  Plug 'tpope/vim-fugitive'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'editorconfig/editorconfig-vim'
-  Plug 'tpope/vim-unimpaired'
-  Plug 'mhartington/vim-typings'
-  Plug 'sheerun/vim-polyglot'
-  Plug 'grvcoelho/vim-javascript-snippets'
-  Plug 'alok/notational-fzf-vim'
-  Plug 'ryanoasis/vim-devicons'
-  Plug 'junegunn/goyo.vim'
-  Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-  Plug 'wookayin/vim-autoimport'
-  Plug 'pechorin/any-jump.vim'
-  Plug 'editorconfig/editorconfig-vim'
-  Plug 'puremourning/vimspector'
-  Plug 'vim-test/vim-test'
-  Plug 'voldikss/vim-floaterm'
-  " Plug 'stefandtw/quickfix-reflector.vim'
-  " Plug 'rafi/awesome-vim-colorschemes'
-  Plug 'joshdick/onedark.vim'
-  Plug 'brooth/far.vim'
-  Plug 'kassio/neoterm' 
-  " Plug 'wincent/ferret'
-  Plug 'kovetskiy/sxhkd-vim'
-  " Plug 'sagi-z/vimspectorpy'
-  
-  let mapleader=","
-  let g:nv_search_paths = ["~/notes"]
-  let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
-  let $NVIM_NCM_LOG_LEVEL="DEBUG"
-  let $NVIM_NCM_MULTI_THREAD=0
+  set clipboard+=unnamedplus
+endif
 
-  call plug#end()
-
-  filetype plugin indent on
-  syntax on
-
-  let filename = '.gitignore'
-  if filereadable(filename)
-      let igstring = ''
-      for oline in readfile(filename)
-          let line = substitute(oline, '\s|\n|\r', '', "g")
-          if line =~ '^#' | con | endif
-          if line == '' | con  | endif
-          if line =~ '^!' | con  | endif
-          if line =~ '/$' | let igstring .= "," . line . "*" | con | endif
-          let igstring .= "," . line
-      endfor
-      let execstring = "set wildignore=".substitute(igstring, '^,', '', "g")
-      execute execstring
-  endif
-  
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  let g:onedark_termcolors=256
-  let g:onedark_terminal_italics=1
-
-  let g:smalls_auto_excursion = 1
-  let g:smalls_auto_excursion_min_input_length = 1
-
-  let g:airline#extensions#ale#enabled = 1
-  
-  let g:far#enable_undo=1
-  let g:far#source='rgnvim'
-  let g:far#file_mask_favorites=['%:p', '**/*.*', '**/*.js', '**/*.py', '**/*.java', '**/*.css', '**/*.html', '**/*.vim', '**/*.cpp', '**/*.c', '**/*.h', ]
-
-  let test#python#runner = 'pytest'
-  " let test#strategy = "vimspectorpy"
-  let g:test#preserve_screen = 1
-
-  let g:vimspector_enable_mappings = 'HUMAN'
-
-  if has('nvim')
-    tmap <C-o> <C-\><C-n>
-  endif
-
-  if has ('gui')
-    set clipboard+=unnamed
-  else
-    set clipboard+=unnamedplus
-  endif
-
+if exists('g:vscode')
+    " VSCode extension
+else
+  " classic NeoVim
   if has("persistent_undo")
       set undodir="$HOME/.undodir"
       set undofile
@@ -514,8 +523,11 @@ else
   " map <leader>] :bnext<CR>
   " map <leader>[ :bprevious<CR>
 
-  map [t :tabprevious<CR>
-  map ]t :tabnext<CR>
+  " map [t :tabprevious<CR>
+  " map ]t :tabnext<CR>
+  "
+  map <leader>] <Plug>(wintabs_previous)
+  map <leader>[ <Plug>(wintabs_next)
 
   nnoremap <a-i> 40<c-w><
   nnoremap <a-o> 40<c-w>>
@@ -571,6 +583,10 @@ else
 
   nnoremap <silent> <leader>gh :call CocActionAsync('doHover')<cr> 
   nnoremap <silent> <leader>rd :call vimspector#Launch()<cr>
+  nnoremap <silent> <leader>dtb :call vimspector#ToggleBreakpoint()<cr>
+  nnoremap <silent> <leader>ds :call vimspector#Stop()<cr>
+  nnoremap <silent> <leader>dr :call vimspector#Restart()<cr>
+  nnoremap <silent> <leader>dc :call vimspector#Continue()<cr>
 
   nmap <silent> [e <Plug>(coc-diagnostic-prev)
   nmap <silent> ]e <Plug>(coc-diagnostic-next)
@@ -595,8 +611,6 @@ else
   nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
   nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
   nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
-  nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
-  nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
   nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
   nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
   nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
@@ -607,6 +621,9 @@ else
   nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
   nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
   nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+
+  nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
+  nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
 
   " hilight search result by default
   let g:FerretHlsearch=1
@@ -658,7 +675,7 @@ else
 
   " ripgrep
   if executable('rg')
-    let $FZF_DEFAULT_COMMAND = 'fdfind --type file --color=always'
+    let $FZF_DEFAULT_COMMAND = 'fd --type file --color=always'
     set grepprg=rg\ --vimgrep
     command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
   endif
@@ -733,3 +750,51 @@ else
     highlight link CocErrorSign GruvboxRed
 
 endif
+
+" Set the basic sizes
+let g:vimspector_sidebar_width = 80
+let g:vimspector_code_minwidth = 85
+let g:vimspector_terminal_minwidth = 75
+
+function! s:CustomiseUI()
+  " Customise the basic UI...
+
+  " Close the output window
+  call win_gotoid( g:vimspector_session_windows.stack_trace )
+  q
+
+  " call win_gotoid( g:vimspector_session_windows.terminal )
+  " q
+
+  " call win_gotoid( g:vimspector_session_windows.variables )
+  " q
+
+  call win_gotoid( g:vimspector_session_windows.watches )
+  q
+endfunction
+
+function s:SetUpTerminal()
+  " Customise the terminal window size/position
+  " For some reasons terminal buffers in Neovim have line numbers
+  " call win_gotoid( g:vimspector_session_windows.terminal )
+  " q
+  " set norelativenumber nonumber
+endfunction
+
+
+augroup MyVimspectorUICustomisation
+  autocmd!
+  autocmd User VimspectorUICreated call s:CustomiseUI()
+  autocmd User VimspectorTerminalOpened call s:SetUpTerminal()
+augroup END
+
+command! Tabc WintabsCloseVimtab
+command! Tabo WintabsOnlyVimtab
+
+" :'<,'>!jq -r | jq
+xnoremap <leader>jc <esc>:'<,'>!jq -r<CR>
+xnoremap <leader>jf <esc>:'<,'>!jq<CR>
+
+nnoremap <silent> ]b     :WintabsNext<CR>
+nnoremap <silent> [b     :WintabsPrevious<CR>
+" endif

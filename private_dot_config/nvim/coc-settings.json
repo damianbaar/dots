@@ -3,7 +3,7 @@
   "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "⚠",
   "diagnostic.hintSign": "➤",
-  "diagnostic.infoSign": "",
+  "diagnostic.infoSign": "ℹ",
   "diagnostic-languageserver.enable": true,
   "diagnostic-languageserver.mergeConfig": true,
   "list.insertMappings": {
@@ -47,6 +47,7 @@
   "git.enableGutters": false,
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
+  "python.linting.pytypeEnabled": false,
   "python.linting.mypyEnabled": true,
   "coc.preferences.rootPatterns": [
     ".git"
@@ -74,6 +75,25 @@
   "suggest.echodocSupport": true,
   "diagnostic.refreshOnInsertMode": true,
   "diagnostic.signOffset": 9999999,
-  "diagnostic.format": "%message"
-
+  "diagnostic.format": "%message",
+   "languageserver": {
+    "haskell": {
+      "command": "haskell-language-server-wrapper",
+      "args": [
+        "--lsp"
+      ],
+      "rootPatterns": [
+        ".stack.yaml",
+        ".hie-bios",
+        "BUILD.bazel",
+        "cabal.config",
+        "package.yaml"
+      ],
+      "filetypes": [
+        "hs",
+        "lhs",
+        "haskell"
+      ]
+    }
+  }
 }

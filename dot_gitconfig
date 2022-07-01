@@ -1,5 +1,5 @@
 [credential]
-	helper = store
+	helper = osxkeychain
 [user]
 	email = baar@codire.de
 	name = Damian Baar
